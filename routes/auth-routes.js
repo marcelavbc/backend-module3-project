@@ -2,14 +2,14 @@ const express = require('express');
 const authRoutes = express.Router();
 const passport = require('passport');
 const bcrypt = require('bcryptjs');
-
+// const uploadCloud = require('../configs/cloudinary-setup');
 // const GoogleStrategy = require('passport-google-oauth20').Strategy;
-
-
+// const ensureLogin = require('connect-ensure-login')
+const uploader = require('../configs/cloudinary-setup')
 // require the user model !!!!
 const User = require('../models/user-model');
 
-//SIGNUP
+//SIGNUP POST
 authRoutes.post('/signup', (req, res, next) => {
   const username = req.body.username;
   const password = req.body.password;
@@ -21,8 +21,13 @@ authRoutes.post('/signup', (req, res, next) => {
     return;
   }
 
-  if (password.length < 4) {
-    res.status(400).json({ message: 'Please make your password at least 4 characters long for security purposes.' });
+  // const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
+  // if (regex.test(password)) {
+  //   res.status(400).json({ message: 'Password needs to have at least 6 chars and must contain at least one number, one lowercase and one uppercase letter.' });
+  //   return;
+  // }
+  if (password.length < 7) {
+    res.status(400).json({ message: 'Please make your password at least 8 characters long for security purposes.' });
     return;
   }
 
@@ -112,7 +117,7 @@ authRoutes.post('/logout', (req, res, next) => {
   res.status(200).json({ message: 'Log out success!' });
 });
 
-
+//LOGGEDIN
 authRoutes.get('/loggedin', (req, res, next) => {
   // req.isAuthenticated() is defined by passport
   if (req.isAuthenticated()) {
@@ -122,6 +127,36 @@ authRoutes.get('/loggedin', (req, res, next) => {
   res.status(403).json({ message: 'Unauthorized' });
 });
 
+//UPLOAD
+authRoutes.post('/upload', uploader.single("avatar"), (req, res, next) => {
+  console.log("upload listo")
+  console.log("File: ", req.file)
+  if (!req.file) {
+    next(new Error('no file uploaded!'));
+    return;
+  }
+  res.json({ path: req.file.path })
+})
 
+
+
+// PUT	/auth/edit
+authRoutes.put('/edit', (req, res, next) => {
+  // const username = req.body.username;
+  // const password = req.body.password;
+  // const campus = req.body.campus;
+  // const course = req.body.course;
+  const avatar = req.body.avatar;
+
+  //achar o usuário pelo id e modificar a imagem
+  //se o usuario está logado, tem uma sessao 
+  const id = req.user._id
+  console.log("id:", id)
+  User.findByIdAndUpdate(id, {avatar})
+  .then(response => res.json({message: "image updated with success"}))
+  .catch(err => res.json(err))
+  
+
+});
 
 module.exports = authRoutes;

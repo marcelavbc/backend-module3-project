@@ -8,7 +8,7 @@ const userSchema = new Schema({
   googleID: String,
   avatar: {
     type: String,
-    default: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSix6dzoByR3w-9uUFcj3twVH9qsE1vNKaYzQ&usqp=CAU"
+    default: "https://www.creativefabrica.com/wp-content/uploads/2019/05/Chef-icon-by-hellopixelzstudio.jpg"
   },
 },
   {

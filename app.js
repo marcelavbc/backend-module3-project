@@ -17,6 +17,7 @@ const passport = require('passport');
 require('./configs/passport');
 
 const User = require('./models/user-model');
+// const Recipe = require('./models/recipe-model')
 
 
 mongoose
@@ -93,7 +94,7 @@ app.locals.title = 'Cook - Generated with IronGenerator';
 
 app.use(cors({
   credentials: true,
-  origin: ['http://localhost:3000', 'http://localhost:3001']
+  origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002', ]
 }));
 
 
@@ -101,8 +102,13 @@ app.use(cors({
 
 const index = require('./routes/index');
 const authRoutes = require('./routes/auth-routes');
+const recipeRoutes = require('./routes/recipes-routes');
+
 app.use('/', index);
 app.use('/api', authRoutes);
+app.use('/api', recipeRoutes)
+
+
 
 
 
