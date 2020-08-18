@@ -59,11 +59,11 @@ Search recipes according to available ingredients
 
 ## Models
 ### User model: 
-  username: String,
-  password: String,
-  email: String,
-  googleID: String,
-  avatar: {
+  - username: String,
+  - password: String,
+  - email: String,
+  - googleID: String,
+  - avatar: {
     type: String,
     default: ""
   },
