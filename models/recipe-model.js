@@ -11,18 +11,27 @@ const recipeSchema = new Schema({
             amount: Number,
             unit: String
         }],
-    image: String,
+    image: {
+        type: String,
+        default: 'https://cdn0.iconfinder.com/data/icons/christmas-2379/60/dish__food__hot__meal__hotel-512.png'
+    },
+    imagePath: {
+        type: String,
+        default: 'https://cdn0.iconfinder.com/data/icons/christmas-2379/60/dish__food__hot__meal__hotel-512.png'
+    },
     analyzedInstructions: [
         {
-            steps: [
-                {
-                    number: Number,
-                    step: String
-                }
-            ]
+            number: Number,
+            step: String
         }
     ],
     owner: { type: Schema.Types.ObjectId, ref: 'User' },
+
+}, {
+    timestamps: {
+        createdAt: "createdAt",
+        updatedAt: "updatedAt"
+    }
 });
 
 const Recipe = mongoose.model('Recipe', recipeSchema);

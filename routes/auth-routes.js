@@ -15,6 +15,7 @@ authRoutes.post('/signup', (req, res, next) => {
   const password = req.body.password;
   const email = req.body.email;
   const avatar = req.body.avatar;
+  const quote = req.body.quote
 
   if (!username || !password) {
     res.status(400).json({ message: 'Provide username and password' });
@@ -49,7 +50,8 @@ authRoutes.post('/signup', (req, res, next) => {
       username: username,
       password: hashPass,
       email: email,
-      avatar: avatar
+      avatar: avatar,
+      quote: quote
     });
 
     aNewUser.save(err => {
@@ -99,16 +101,16 @@ authRoutes.post('/login', (req, res, next) => {
   })(req, res, next);
 });
 
-// authRoutes.get("/auth/google", passport.authenticate("google", {
-//   scope: [
-//     "https://www.googleapis.com/auth/userinfo.profile",
-//     "https://www.googleapis.com/auth/userinfo.email"
-//   ]
-// }));
-// authRoutes.get("/auth/google/callback", passport.authenticate("google", {
-//   successRedirect: "/profile",
-//   failureRedirect: "/login"
-// }));
+authRoutes.get("/auth/google", passport.authenticate("google", {
+  scope: [
+    "https://www.googleapis.com/auth/userinfo.profile",
+    "https://www.googleapis.com/auth/userinfo.email"
+  ]
+}));
+authRoutes.get("/auth/google/callback", passport.authenticate("google", {
+  successRedirect: "/profile",
+  failureRedirect: "/login"
+}));
 
 //LOGOUT
 authRoutes.post('/logout', (req, res, next) => {
@@ -129,8 +131,8 @@ authRoutes.get('/loggedin', (req, res, next) => {
 
 //UPLOAD
 authRoutes.post('/upload', uploader.single("avatar"), (req, res, next) => {
-  console.log("upload listo")
-  console.log("File: ", req.file)
+  // console.log("upload listo")
+  // console.log("File: ", req.file)
   if (!req.file) {
     next(new Error('no file uploaded!'));
     return;
@@ -142,21 +144,19 @@ authRoutes.post('/upload', uploader.single("avatar"), (req, res, next) => {
 
 // PUT	/auth/edit
 authRoutes.put('/edit', (req, res, next) => {
-  // const username = req.body.username;
-  // const password = req.body.password;
-  // const campus = req.body.campus;
-  // const course = req.body.course;
-  const avatar = req.body.avatar;
 
+  const avatar = req.body.avatar;
+  const quote = req.body.quote
   //achar o usuário pelo id e modificar a imagem
   //se o usuario está logado, tem uma sessao 
   const id = req.user._id
   console.log("id:", id)
-  User.findByIdAndUpdate(id, {avatar})
-  .then(response => res.json({message: "image updated with success"}))
-  .catch(err => res.json(err))
-  
+  User.findByIdAndUpdate(id, { avatar, quote })
+    .then(response => res.json({ message: "data updated with success" }))
+    .catch(err => res.json(err))
+
 
 });
+
 
 module.exports = authRoutes;
