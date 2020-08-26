@@ -6,6 +6,8 @@ const uploader = require('../configs/cloudinary-setup')
 const Recipe = require('../models/recipe-model')
 const User = require('../models/user-model')
 
+
+
 //POST A RECIPE
 recipeRoutes.post('/recipes', (req, res, next) => {
 
@@ -28,12 +30,12 @@ recipeRoutes.post('/recipes', (req, res, next) => {
 
 recipeRoutes.get('/recipes', (req, res, next) => {
     Recipe.find()
-    .then(allRecipes => {
-        res.json(allRecipes)
-    })
-    .catch(err => {
-        res.json(err);
-      });
+        .then(allRecipes => {
+            res.json(allRecipes)
+        })
+        .catch(err => {
+            res.json(err);
+        });
 })
 
 

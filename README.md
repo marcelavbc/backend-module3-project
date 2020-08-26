@@ -25,36 +25,53 @@ Search recipes according to available ingredients
 - **recipes** - As a user I want to select a recipe from a list and see all the information about it. I want to save this recipe to my own recipe book, if I wish. 
 
 ## ROUTES:
+
 ## HOMEPAGE
 | Method | URL | Description      |
 | ------ | ----| ---------------- |
 | GET    | /   | renders homepage |
 
+### Auth Routes
+## SIGN UP
+| Method | URL       | Description              |
+| ------ | ----------| ------------------------ |
+| POST   | api/login | redirects to signup form |
+
 ## LOGIN
-| Method | URL    | Description             |
-| ------ | -------| ----------------------- |
-| GET    | /login | redirects to login form |
-| POST   | /login | redirects to login form |
-
-
-## CREATE ACCOUNT
-| Method | URL    | Description              |
-| ------ | -------| ------------------------ |
-| GET    | /login | redirects to signup form |
-| POST   | /login | redirects to signup form |
-
+| Method | URL       | Description             |
+| ------ | ----------| ----------------------- |
+| POST   | api/login | redirects to login form |
 
 ## LOGOUT
-| Method | URL     | Description             |
-| ------ | ------- | ------------------------|
-| POST   | /logout | redirects to login page |
+| Method | URL        | Description             |
+| ------ | ---------- | ------------------------|
+| POST   | /apilogout | redirects to login page |
 
+## LOGGEDIN
+| Method | URL         | Description             |
+| -----  | ----------- | ------------------------|
+| GET    | /api/logout |                         |
 
-### PROFILE 
-| Method | URL      | Description                                     |
-| ------ | -------- | ------------------------------------------------|
-| GET    | /profile | redirects to profile user page                  |
-| PUT    | /profile | redirects to profile page with the data changed |
+### Profile Routes
+| Method | URL                  |          Description                           |
+| ------ | -------------------- | -----------------------------------------------|
+| PUT    | /profile             | redirects to profile page with the data changed|
+| GET    | /profile/recipes     | redirects to profile recipe page               |
+| GET    | /profile/recipes/:id | redirects to recipe details page               |
+| PUT    | /profile/recipes/:id | edit recipe details                            |
+| DELETE | /profile/recipes/:id | delete a recipe                                |
+
+### Users Routes
+| Method | URL                          |          Description                           |
+| ------ | ---------------------------- | -----------------------------------------------|
+| GET    | /users                       | return all users                               |
+| GET    | /users/:id/recipes           | return all recipes from user                   |
+| GET    | /users/:id/recipes/recipe_id | return one recipe from user                    |
+
+### Recipes Routes
+| Method | URL        |          Description                           |
+| ------ | ---------- | -----------------------------------------------|
+| GET    | /recipes   | return all recipes by query                    |
 
 
 ## Models
@@ -63,6 +80,7 @@ Search recipes according to available ingredients
   - password: String,
   - email: String,
   - googleID: String,
+  - quote: String,
   - avatar: {
     type: String,
     default: ""

@@ -2,11 +2,8 @@ const express = require('express');
 const authRoutes = express.Router();
 const passport = require('passport');
 const bcrypt = require('bcryptjs');
-// const uploadCloud = require('../configs/cloudinary-setup');
-// const GoogleStrategy = require('passport-google-oauth20').Strategy;
-// const ensureLogin = require('connect-ensure-login')
 const uploader = require('../configs/cloudinary-setup')
-// require the user model !!!!
+
 const User = require('../models/user-model');
 
 //SIGNUP POST
@@ -59,8 +56,6 @@ authRoutes.post('/signup', (req, res, next) => {
         res.status(400).json({ message: 'Saving user to database went wrong.' });
         return;
       }
-      // Automatically log in user after sign up
-      // .login() here is actually predefined passport method
       req.login(aNewUser, (err) => {
         if (err) {
           res.status(500).json({ message: 'Login after signup went bad.' });
@@ -101,16 +96,16 @@ authRoutes.post('/login', (req, res, next) => {
   })(req, res, next);
 });
 
-authRoutes.get("/auth/google", passport.authenticate("google", {
-  scope: [
-    "https://www.googleapis.com/auth/userinfo.profile",
-    "https://www.googleapis.com/auth/userinfo.email"
-  ]
-}));
-authRoutes.get("/auth/google/callback", passport.authenticate("google", {
-  successRedirect: "/profile",
-  failureRedirect: "/login"
-}));
+// authRoutes.get("/auth/google", passport.authenticate("google", {
+//   scope: [
+//     "https://www.googleapis.com/auth/userinfo.profile",
+//     "https://www.googleapis.com/auth/userinfo.email"
+//   ]
+// }));
+// authRoutes.get("/auth/google/callback", passport.authenticate("google", {
+//   successRedirect: "/profile",
+//   failureRedirect: "/login"
+// }));
 
 //LOGOUT
 authRoutes.post('/logout', (req, res, next) => {
@@ -130,33 +125,33 @@ authRoutes.get('/loggedin', (req, res, next) => {
 });
 
 //UPLOAD
-authRoutes.post('/upload', uploader.single("avatar"), (req, res, next) => {
-  // console.log("upload listo")
-  // console.log("File: ", req.file)
-  if (!req.file) {
-    next(new Error('no file uploaded!'));
-    return;
-  }
-  res.json({ path: req.file.path })
-})
+// authRoutes.post('/upload', uploader.single("avatar"), (req, res, next) => {
+//   // console.log("upload listo")
+//   // console.log("File: ", req.file)
+//   if (!req.file) {
+//     next(new Error('no file uploaded!'));
+//     return;
+//   }
+//   res.json({ path: req.file.path })
+// })
 
 
 
 // PUT	/auth/edit
-authRoutes.put('/edit', (req, res, next) => {
+// authRoutes.put('/edit', (req, res, next) => {
 
-  const avatar = req.body.avatar;
-  const quote = req.body.quote
-  //achar o usuário pelo id e modificar a imagem
-  //se o usuario está logado, tem uma sessao 
-  const id = req.user._id
-  console.log("id:", id)
-  User.findByIdAndUpdate(id, { avatar, quote })
-    .then(response => res.json({ message: "data updated with success" }))
-    .catch(err => res.json(err))
+//   const avatar = req.body.avatar;
+//   const quote = req.body.quote
+//   //achar o usuário pelo id e modificar a imagem
+//   //se o usuario está logado, tem uma sessao 
+//   const id = req.user._id
+//   console.log("id:", id)
+//   User.findByIdAndUpdate(id, { avatar, quote })
+//     .then(response => res.json({ message: "data updated with success" }))
+//     .catch(err => res.json(err))
 
 
-});
+// });
 
 
 module.exports = authRoutes;
