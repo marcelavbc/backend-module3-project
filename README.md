@@ -35,28 +35,30 @@ Search recipes according to available ingredients
 ## SIGN UP
 | Method | URL       | Description              |
 | ------ | ----------| ------------------------ |
-| POST   | api/login | redirects to signup form |
+| POST   | api/login | create a new account     |
 
 ## LOGIN
 | Method | URL       | Description             |
 | ------ | ----------| ----------------------- |
-| POST   | api/login | redirects to login form |
+| POST   | api/login | login                   |
 
 ## LOGOUT
 | Method | URL        | Description             |
 | ------ | ---------- | ------------------------|
-| POST   | /apilogout | redirects to login page |
+| POST   | api/logout | logout                  |
 
 ## LOGGEDIN
-| Method | URL         | Description             |
-| -----  | ----------- | ------------------------|
-| GET    | /api/logout |                         |
+| Method | URL         | Description                    |
+| -----  | ----------- | -------------------------------|
+| GET    | api/logout  | check if the user is logged in |
 
 ### Profile Routes
 | Method | URL                  |          Description                           |
 | ------ | -------------------- | -----------------------------------------------|
-| PUT    | /profile             | redirects to profile page with the data changed|
-| GET    | /profile/recipes     | redirects to profile recipe page               |
+| POST   | /profile/updateavatar| changes avatar image                           |
+| PUT    | /profile/edit        | changes user data                              |
+| POST   | /profile/recipes     | create a new recipe in the profile             |
+| GET    | /profile/recipes     | return all recipes from profile                |
 | GET    | /profile/recipes/:id | redirects to recipe details page               |
 | PUT    | /profile/recipes/:id | edit recipe details                            |
 | DELETE | /profile/recipes/:id | delete a recipe                                |

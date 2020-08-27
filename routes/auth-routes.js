@@ -89,9 +89,11 @@ authRoutes.post('/login', (req, res, next) => {
         res.status(500).json({ message: 'Session save went bad.' });
         return;
       }
-      // We are now logged in (that's why we can also send req.user)
+      req.session.currentUser = theUser
       res.status(200).json(theUser);
-      // console.log(req.user)
+      console.log(req.session, theUser)
+      console.log('session in login' , req.session)
+
     });
   })(req, res, next);
 });
