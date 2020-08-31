@@ -105,11 +105,15 @@ const index = require('./routes/index');
 const authRoutes = require('./routes/auth-routes');
 const recipeRoutes = require('./routes/recipes-routes');
 const profileRoutes = require('./routes/profile-routes')
+const usersRoutes = require('./routes/users-routes')
+
 
 app.use('/', index);
 app.use('/api', authRoutes);
 app.use('/api', recipeRoutes)
 app.use('/api', profileRoutes)
+app.use('/api', usersRoutes)
+
 
 
 

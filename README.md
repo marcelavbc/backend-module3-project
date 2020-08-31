@@ -55,7 +55,7 @@ Search recipes according to available ingredients
 ### Profile Routes
 | Method | URL                  |          Description                           |
 | ------ | -------------------- | -----------------------------------------------|
-| POST   | /profile/updateavatar| changes avatar image                           |
+| PUT    | /profile/updateavatar| changes avatar image                           |
 | PUT    | /profile/edit        | changes user data                              |
 | POST   | /profile/recipes     | create a new recipe in the profile             |
 | GET    | /profile/recipes     | return all recipes from profile                |

@@ -77,13 +77,10 @@ authRoutes.post('/login', (req, res, next) => {
     }
 
     if (!theUser) {
-      // "failureDetails" contains the error messages
-      // from our logic in "LocalStrategy" { message: '...' }.
       res.status(401).json(failureDetails);
       return;
     }
 
-    // save user in session
     req.login(theUser, (err) => {
       if (err) {
         res.status(500).json({ message: 'Session save went bad.' });
@@ -126,34 +123,6 @@ authRoutes.get('/loggedin', (req, res, next) => {
   res.status(403).json({ message: 'Unauthorized' });
 });
 
-//UPLOAD
-// authRoutes.post('/upload', uploader.single("avatar"), (req, res, next) => {
-//   // console.log("upload listo")
-//   // console.log("File: ", req.file)
-//   if (!req.file) {
-//     next(new Error('no file uploaded!'));
-//     return;
-//   }
-//   res.json({ path: req.file.path })
-// })
-
-
-
-// PUT	/auth/edit
-// authRoutes.put('/edit', (req, res, next) => {
-
-//   const avatar = req.body.avatar;
-//   const quote = req.body.quote
-//   //achar o usuário pelo id e modificar a imagem
-//   //se o usuario está logado, tem uma sessao 
-//   const id = req.user._id
-//   console.log("id:", id)
-//   User.findByIdAndUpdate(id, { avatar, quote })
-//     .then(response => res.json({ message: "data updated with success" }))
-//     .catch(err => res.json(err))
-
-
-// });
 
 
 module.exports = authRoutes;
