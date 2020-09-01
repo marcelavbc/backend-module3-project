@@ -26,6 +26,8 @@ const recipeSchema = new Schema({
             ]
         }
     ],
+    readyInMinutes: Number,
+    servings: Number,
     owner: { type: Schema.Types.ObjectId, ref: 'User' },
 
 }, {

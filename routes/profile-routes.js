@@ -34,15 +34,15 @@ profileRoutes.post('/profile/recipes', uploader.single("image"), (req, res, next
     //cria uma nova receita para usuário logado
     console.log('req.body', req.body)
     console.log('req.file', req.file)
-
     const image = req.file ? req.file.path : ''
-    console.log(image)
+
     const recipe = {
-        title: req.body.title,
         owner: req.body.owner,
         title: req.body.title,
-        extendedIngredients: JSON.parse(req.body.extendedIngredients),
-        analyzedInstructions: JSON.parse(req.body.analyzedInstructions),
+        servings: req.body.servings,
+        readyInMinutes: req.body.servings,
+        extendedIngredients: req.body.extendedIngredients ? JSON.parse(req.body.extendedIngredients) : null,
+        analyzedInstructions: req.body.analyzedInstructions ? JSON.parse(req.body.analyzedInstructions) : null,
         imagePath: image
     }
 
@@ -57,13 +57,13 @@ profileRoutes.post('/profile/recipes', uploader.single("image"), (req, res, next
 
 profileRoutes.get('/profile/recipes', (req, res, next) => {
     //retorna todas as receitas do usuário logado
+    console.log('session in profile-routes', req.session)
     console.log('usuario logado:', req.session.currentUser._id)
     const userId = req.session.currentUser._id
     console.log(userId)
     Recipe.find({ owner: userId })
         .then(recipes => {
             res.json(recipes)
-            console.log('recipes',recipes)
         })
         .catch(err => {
             res.json(err)
