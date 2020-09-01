@@ -12,7 +12,7 @@ const userSchema = new Schema({
   },
   avatar: {
     type: String,
-    default: "https://www.creativefabrica.com/wp-content/uploads/2019/05/Chef-icon-by-hellopixelzstudio.jpg"
+    default: "https://image.flaticon.com/icons/svg/1912/1912297.svg"
   },
 },
   {

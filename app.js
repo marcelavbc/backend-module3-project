@@ -51,7 +51,8 @@ app.use(require('node-sass-middleware')({
 app.use(session({
   secret: process.env.SESS_SECRET,
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: true, 
+  cookie: {maxAge: 600000}
 }));
 
 
