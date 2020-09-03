@@ -124,7 +124,6 @@ profileRoutes.get('/profile/savedRecipes', (req, res, next) => {
             .populate('recipe')
             .then(internalRecipesList => {
                 //buscar as receitas externas
-
                 const finalResponse = [...internalRecipesList] //deve ter os resultado das duas buscas
                 ApiSavedRecipe.find({ user: userId })
                     .then(apiRecipesList => {
@@ -139,20 +138,24 @@ profileRoutes.get('/profile/savedRecipes', (req, res, next) => {
                             "headers": {
                                 "content-type": "application/octet-stream",
                                 "x-rapidapi-host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
-                                "x-rapidapi-key": "3ae8633d0fmshea232df942d8d7bp19b871jsn75705b922f90",
+                                "x-rapidapi-key": process.env.SPOONCULAR_KEY,
                                 "useQueryString": true
                             }, "params": {
                                 "ids": idsList.toString()
                             }
                         })
                             .then((response) => {
-                                console.log('resposta da Api', response.data)
+                                // console.log('resposta da Api', response.data)
                                 //misturamos tudo e enviamos a finalResponse
                                 response.data.forEach(apiRecipe => {
                                     finalResponse.push({
                                         _id: apiRecipe.id,
                                         title: apiRecipe.title,
-
+                                        readyInMinutes: apiRecipe.readyInMinutes,
+                                        servings: apiRecipe.servings,
+                                        extendedIngredients: apiRecipe.extendedIngredients,
+                                        analyzedInstructions: apiRecipe.analyzedInstructions,
+                                        image: apiRecipe.image
                                     })
                                 })
                                 res.status(200).json(finalResponse)
@@ -162,26 +165,14 @@ profileRoutes.get('/profile/savedRecipes', (req, res, next) => {
                             })
                     })
             })
-
-
-
-
     } else {
         res.status(401).json({ message: 'Unauthorized.' });
 
     }
 })
 
-profileRoutes.get('/profile/recipes/:id', (req, res, next) => {
-    //retorna detalhes de uma receita do usuário logado
-})
 
-profileRoutes.put('/profile/recipes/:id', (req, res, next) => {
-    //modifica detalhes de uma receita do usuário logado
-})
 
-profileRoutes.delete('/profile/recipes/:id', (req, res, next) => {
-    //modifica detalhes de uma receita do usuário logado
-})
+
 
 module.exports = profileRoutes

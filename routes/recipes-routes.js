@@ -2,9 +2,9 @@ const express = require('express');
 const recipeRoutes = express.Router();
 const mongoose = require('mongoose')
 const uploader = require('../configs/cloudinary-setup')
-
+const axios = require('axios')
 const Recipe = require('../models/recipe-model')
-const User = require('../models/user-model')
+const ApiSavedRecipe = require('../models/api-saved-recipes')
 
 
 recipeRoutes.get('/recipes/all', (req, res, next) => {
@@ -19,17 +19,42 @@ recipeRoutes.get('/recipes/all', (req, res, next) => {
         })
 })
 
+
 recipeRoutes.get('/recipes/:id', (req, res, next) => {
     console.log(req.params.id)
-    Recipe.findById(req.params.id)
-        .then(recipe => {
-            console.log('user', recipe)
-            res.json(recipe)
+    let recipeId = req.params.id
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        axios({
+            "method": "GET",
+            "url": `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${recipeId}/information`,
+            "headers": {
+                "content-type": "application/octet-stream",
+                "x-rapidapi-host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
+                "x-rapidapi-key": process.env.SPOONCULAR_KEY,
+                "useQueryString": true
+            }
         })
-        .catch(err => {
-            res.json(err)
-        })
+            .then((response) => {
+                console.log(response.data)
+                res.json(response.data)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+
+    } else {
+        Recipe.findById(req.params.id)
+            .populate('owner')
+            .then(recipe => {
+                res.status(200).json(recipe)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
+
 })
+
 
 
 
