@@ -77,6 +77,7 @@ profileRoutes.get('/profile/recipes', (req, res, next) => {
 profileRoutes.post('/profile/savedRecipes', (req, res, next) => {
     //favoritar uma receita, interna ou externa
     //1. validar se o usuario está logado
+    console.log('savedRecipes called')
     const userId = req.session.currentUser._id
     if (req.isAuthenticated()) {
         //1. buscar o id internamente. Se não exite, buscar na API
@@ -118,11 +119,13 @@ profileRoutes.post('/profile/savedRecipes', (req, res, next) => {
 
 profileRoutes.get('/profile/savedRecipes', (req, res, next) => {
     const userId = req.session.currentUser._id
+    console.log('get savedRecipes')
     if (req.isAuthenticated()) {
         //buscar as receitas internas 
         InternalSavedRecipe.find({ user: userId })
             .populate('recipe')
             .then(internalRecipesList => {
+                console.log('mostre internalRecipesList ', internalRecipesList)
                 //buscar as receitas externas
                 const finalResponse = [...internalRecipesList] //deve ter os resultado das duas buscas
                 ApiSavedRecipe.find({ user: userId })

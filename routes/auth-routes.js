@@ -62,6 +62,7 @@ authRoutes.post('/signup', (req, res, next) => {
           return;
         }
         // Send the user's information to the frontend
+        req.session.currentUser = aNewUser
         res.status(200).json(aNewUser);
       });
     });
