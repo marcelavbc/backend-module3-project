@@ -86,7 +86,7 @@ profileRoutes.post('/profile/savedRecipes', (req, res, next) => {
                 if (recipe) {
                     InternalSavedRecipe.create({
                         user: userId,
-                        recipe: req.body.recipeId
+                        recipe: req.body.recipeId,
                     })
                         .then(savedRecipe => {
                             res.status(200).json(savedRecipe)
@@ -96,7 +96,7 @@ profileRoutes.post('/profile/savedRecipes', (req, res, next) => {
                     //salvar en api-saved-recipe
                     ApiSavedRecipe.create({
                         user: userId,
-                        recipeId: req.body.recipeId
+                        recipe: req.bodyrecipeId
                     })
                         .then(savedRecipe => {
                             res.status(200).json(savedRecipe)
@@ -131,41 +131,63 @@ profileRoutes.get('/profile/savedRecipes', (req, res, next) => {
                 ApiSavedRecipe.find({ user: userId })
                     .then(apiRecipesList => {
                         //misturar e devolver a resposta
+                        console.log('mostre Api RecipesList ', apiRecipesList)
+
                         const idsList = []
                         apiRecipesList.forEach(ele => {
+                            console.log('datos', ele)
                             idsList.push(ele.recipeId)
                         })
-                        axios({
-                            "method": "GET",
-                            "url": "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/informationBulk",
-                            "headers": {
-                                "content-type": "application/octet-stream",
-                                "x-rapidapi-host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
-                                "x-rapidapi-key": process.env.SPOONCULAR_KEY,
-                                "useQueryString": true
-                            }, "params": {
-                                "ids": idsList.toString()
-                            }
-                        })
-                            .then((response) => {
-                                // console.log('resposta da Api', response.data)
-                                //misturamos tudo e enviamos a finalResponse
-                                response.data.forEach(apiRecipe => {
-                                    finalResponse.push({
-                                        _id: apiRecipe.id,
-                                        title: apiRecipe.title,
-                                        readyInMinutes: apiRecipe.readyInMinutes,
-                                        servings: apiRecipe.servings,
-                                        extendedIngredients: apiRecipe.extendedIngredients,
-                                        analyzedInstructions: apiRecipe.analyzedInstructions,
-                                        image: apiRecipe.image
+                        console.log('idsList ', idsList)
+                        if (idsList.length) {
+                            axios({
+                                "method": "GET",
+                                "url": "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/informationBulk",
+                                "headers": {
+                                    "content-type": "application/octet-stream",
+                                    "x-rapidapi-host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
+                                    "x-rapidapi-key": process.env.SPOONCULAR_KEY,
+                                    "useQueryString": true
+                                }, "params": {
+                                    "ids": idsList.toString()
+                                }
+                            })
+                                .then((response) => {
+                                    console.log('resposta da Api', response.data)
+                                    //misturamos tudo e enviamos a finalResponse
+                                    // response.data.forEach(apiRecipe => {
+                                    //     console.log('the api recipes data:', apiRecipe)
+
+                                    // })
+                                    console.log('response.data: ', response.data)
+                                    const formatedApiRecipeList = apiRecipesList.map(ele => {
+
+                                        const data = response.data.find(recipe => recipe.id == ele.recipeId)
+                                        if (data) {
+                                            return {
+                                                _id: ele._id,
+                                                title: data.title,
+                                                readyInMinutes: data.readyInMinutes,
+                                                servings: data.servings,
+                                                extendedIngredients: data.extendedIngredients,
+                                                analyzedInstructions: data.analyzedInstructions,
+                                                image: data.image,
+                                                recipeId: data.id
+                                            }
+                                        }
+                                        return ele
                                     })
+                                    console.log('ApiRecipeList', apiRecipesList)
+
+                                    console.log('formatedApiRecipeList', formatedApiRecipeList)
+                                    res.status(200).json(finalResponse.concat(formatedApiRecipeList))
                                 })
-                                res.status(200).json(finalResponse)
-                            })
-                            .catch((error) => {
-                                console.log(error)
-                            })
+                                .catch((error) => {
+                                    console.log(error)
+                                })
+                        } else {
+                            res.status(200).json(finalResponse)
+                        }
                     })
             })
     } else {
@@ -174,7 +196,18 @@ profileRoutes.get('/profile/savedRecipes', (req, res, next) => {
     }
 })
 
-
+profileRoutes.delete('/profile/savedInternalRecipes/:_id', (req, res, next) => {
+    console.log('savedRecipes delete called')
+    if (req.isAuthenticated()) {
+        InternalSavedRecipe.findByIdAndRemove(req.params._id)
+            .then(deletedRecipe => {
+                res.status(200).json(deletedRecipe)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    } 
+})
 
 
 

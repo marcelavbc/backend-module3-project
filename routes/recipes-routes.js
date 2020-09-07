@@ -11,7 +11,7 @@ recipeRoutes.get('/recipes/all', (req, res, next) => {
     Recipe.find()
         .populate('owner')
         .then(recipes => {
-            console.log(recipes)
+            console.log('recipes' ,recipes)
             res.json(recipes)
         })
         .catch(err => {
@@ -35,7 +35,6 @@ recipeRoutes.get('/recipes/:id', (req, res, next) => {
             }
         })
             .then((response) => {
-                console.log(response.data)
                 res.json(response.data)
             })
             .catch((error) => {
@@ -46,6 +45,8 @@ recipeRoutes.get('/recipes/:id', (req, res, next) => {
         Recipe.findById(req.params.id)
             .populate('owner')
             .then(recipe => {
+                console.log('response in' , recipe)
+
                 res.status(200).json(recipe)
             })
             .catch((error) => {
@@ -56,7 +57,17 @@ recipeRoutes.get('/recipes/:id', (req, res, next) => {
 })
 
 
-
+recipeRoutes.delete('/profile/recipe/:_id', (req, res, next) => {
+    if (req.isAuthenticated()) {
+        Recipe.findByIdAndRemove(req.params._id)
+            .then(deletedRecipe => {
+                res.status(200).json(deletedRecipe)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    } 
+})
 
 
 
