@@ -1,7 +1,10 @@
-const User          = require('../models/user-model');
+const User = require('../models/user-model');
 const LocalStrategy = require('passport-local').Strategy;
-const bcrypt        = require('bcryptjs'); 
-const passport      = require('passport');
+const GoogleStrategy = require("passport-google-oauth20").Strategy
+
+
+const bcrypt = require('bcryptjs');
+const passport = require('passport');
 
 passport.serializeUser((loggedInUser, cb) => {
   cb(null, loggedInUser._id);
@@ -37,3 +40,32 @@ passport.use(new LocalStrategy((username, password, next) => {
     next(null, foundUser);
   });
 }));
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: "/auth/google/callback"
+    },
+    (accessToken, refreshToken, profile, done) => {
+      // to see the structure of the data in received response:
+      console.log("Google account details:", profile)
+
+      User.findOne({ googleID: profile.id })
+        .then(user => {
+          if (user) {
+            done(null, user)
+            return
+          }
+
+          User.create({ googleID: profile.id, fullName: profile.displayName, avatar: profile.photos[0].value })
+            .then(newUser => {
+              done(null, newUser)
+            })
+            .catch(err => done(err)) // closes User.create()
+        })
+        .catch(err => done(err)) // closes User.findOne()
+    }
+  )
+)

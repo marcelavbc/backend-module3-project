@@ -74,6 +74,9 @@ profileRoutes.get('/profile/recipes', (req, res, next) => {
         })
 })
 
+
+
+
 profileRoutes.post('/profile/savedRecipes', (req, res, next) => {
     //favoritar uma receita, interna ou externa
     //1. validar se o usuario está logado
@@ -117,6 +120,8 @@ profileRoutes.post('/profile/savedRecipes', (req, res, next) => {
     }
 })
 
+
+
 profileRoutes.get('/profile/savedRecipes', (req, res, next) => {
     const userId = req.session.currentUser._id
     console.log('get savedRecipes')
@@ -124,6 +129,7 @@ profileRoutes.get('/profile/savedRecipes', (req, res, next) => {
         //buscar as receitas internas 
         InternalSavedRecipe.find({ user: userId })
             .populate('recipe')
+            .populate('user')
             .then(internalRecipesList => {
                 console.log('mostre internalRecipesList ', internalRecipesList)
                 //buscar as receitas externas
@@ -206,9 +212,21 @@ profileRoutes.delete('/profile/savedInternalRecipes/:_id', (req, res, next) => {
             .catch((error) => {
                 console.log(error)
             })
-    } 
+    }
 })
 
+profileRoutes.delete('/profile/recipe/:_id', (req, res, next) => {
+    console.log('my recipe delete called')
+    if (req.isAuthenticated()) {
+        Recipe.findByIdAndRemove(req.params._id)
+            .then(deletedRecipe => {
+                res.status(200).json(deletedRecipe)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
+})
 
 
 module.exports = profileRoutes

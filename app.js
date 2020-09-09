@@ -5,13 +5,12 @@ const cookieParser = require('cookie-parser');
 const express = require('express');
 const favicon = require('serve-favicon');
 const hbs = require('hbs');
-const mongoose = require('mongoose');
 const logger = require('morgan');
 const path = require('path');
 const cors = require('cors');
-
-
 const session = require('express-session');
+const MongoStore = require('connect-mongo')(session)
+const mongoose = require('mongoose');
 const passport = require('passport');
 
 require('./configs/passport');
@@ -51,7 +50,12 @@ app.use(require('node-sass-middleware')({
 app.use(session({
   secret: process.env.SESS_SECRET,
   resave: true,
-  saveUninitialized: true, 
+  saveUninitialized: true,
+  cookie: { maxAge: 600000 }, // 60 * 10000 ms === 10 min
+  store: new MongoStore({
+    mongooseConnection: mongoose.connection,
+    ttl: 60 * 60 * 24 // time to live - 60sec * 60min * 24h => 1 day
+  })
 }));
 
 
@@ -95,7 +99,7 @@ app.locals.title = 'Cook - Generated with IronGenerator';
 
 app.use(cors({
   credentials: true,
-  origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002', ]
+  origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002',]
 }));
 
 

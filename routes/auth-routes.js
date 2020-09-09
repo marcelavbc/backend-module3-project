@@ -90,22 +90,22 @@ authRoutes.post('/login', (req, res, next) => {
       req.session.currentUser = theUser
       res.status(200).json(theUser);
       console.log(req.session, theUser)
-      console.log('session in login' , req.session)
+      console.log('session in login', req.session)
 
     });
   })(req, res, next);
 });
 
-// authRoutes.get("/auth/google", passport.authenticate("google", {
-//   scope: [
-//     "https://www.googleapis.com/auth/userinfo.profile",
-//     "https://www.googleapis.com/auth/userinfo.email"
-//   ]
-// }));
-// authRoutes.get("/auth/google/callback", passport.authenticate("google", {
-//   successRedirect: "/profile",
-//   failureRedirect: "/login"
-// }));
+authRoutes.get("/auth/google", passport.authenticate("google", {
+  scope: [
+    "https://www.googleapis.com/auth/userinfo.profile",
+    "https://www.googleapis.com/auth/userinfo.email"
+  ]
+}));
+authRoutes.get("/auth/google/callback", passport.authenticate("google", {
+  successRedirect: "/profile",
+  failureRedirect: "/login"
+}));
 
 //LOGOUT
 authRoutes.post('/logout', (req, res, next) => {
