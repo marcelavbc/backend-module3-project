@@ -66,17 +66,7 @@ recipeRoutes.put('/recipe/:id', (req, res, next) => {
         })
 })
 
-// recipeRoutes.delete('/profile/recipe/:_id', (req, res, next) => {
-//     if (req.isAuthenticated()) {
-//         Recipe.findByIdAndRemove(req.params._id)
-//             .then(deletedRecipe => {
-//                 res.status(200).json(deletedRecipe)
-//             })
-//             .catch((error) => {
-//                 console.log(error)
-//             })
-//     } 
-// })
+
 
 
 

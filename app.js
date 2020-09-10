@@ -51,7 +51,7 @@ app.use(session({
   secret: process.env.SESS_SECRET,
   resave: true,
   saveUninitialized: true,
-  cookie: { maxAge: 600000 }, // 60 * 10000 ms === 10 min
+  cookie: { maxAge: 6000000 }, // 60 * 10000 ms === 10 min
   store: new MongoStore({
     mongooseConnection: mongoose.connection,
     ttl: 60 * 60 * 24 // time to live - 60sec * 60min * 24h => 1 day

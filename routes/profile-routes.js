@@ -228,5 +228,17 @@ profileRoutes.delete('/profile/recipe/:_id', (req, res, next) => {
     }
 })
 
+profileRoutes.delete('/profile/savedApiRecipes/:_id', (req, res, next) => {
+    console.log('savedApiRecipes delete called')
+    if (req.isAuthenticated()) {
+        ApiSavedRecipe.findByIdAndRemove(req.params._id)
+            .then(deletedRecipe => {
+                res.status(200).json(deletedRecipe)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
+})
 
 module.exports = profileRoutes
