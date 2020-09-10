@@ -56,20 +56,18 @@ recipeRoutes.get('/recipes/:id', (req, res, next) => {
 
 })
 
-recipeRoutes.put('/recipe/:id', (req, res, next) => {
-    Recipe.findByIdAndUpdate(req.params.id, req.body)
-        .then((recipe) => {
-            res.status(200).json(recipe)
-        })
-        .catch((error) => {
-            console.log(error)
-        })
-})
-
-
-
-
-
+// recipeRoutes.put('/recipe/:id', (req, res, next) => {
+//     console.log('req.body', req.body)
+//     const body = req.body
+//     Recipe.findByIdAndUpdate(req.params.id, { body })
+//         .then(() => {
+//             console.log()
+//             res.status(200).json(recipe)
+//         })
+//         .catch((error) => {
+//             console.log(error)
+//         })
+// })
 
 
 module.exports = recipeRoutes;

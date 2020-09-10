@@ -220,13 +220,18 @@ profileRoutes.delete('/profile/recipe/:_id', (req, res, next) => {
     if (req.isAuthenticated()) {
         Recipe.findByIdAndRemove(req.params._id)
             .then(deletedRecipe => {
-                res.status(200).json(deletedRecipe)
+                InternalSavedRecipe.deleteMany({recipe: req.params._id})
+                .then(() => {
+                    res.status(200).json(deletedRecipe)
+                })
             })
             .catch((error) => {
                 console.log(error)
             })
     }
 })
+
+
 
 profileRoutes.delete('/profile/savedApiRecipes/:_id', (req, res, next) => {
     console.log('savedApiRecipes delete called')
@@ -240,5 +245,6 @@ profileRoutes.delete('/profile/savedApiRecipes/:_id', (req, res, next) => {
             })
     }
 })
+
 
 module.exports = profileRoutes
