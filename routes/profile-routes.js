@@ -9,8 +9,8 @@ const uploader = require('../configs/cloudinary-setup')
 
 profileRoutes.put('/profile/updateavatar', uploader.single("avatar"), (req, res, next) => {
     //subir em claudicar e atualizar profile
-    console.log('session in profile-routes', req.session)
-    console.log('usuario logado:', req.session.currentUser)
+    // console.log('session in profile-routes', req.session)
+    // console.log('usuario logado:', req.session.currentUser)
     const avatar = req.file.path;
     const id = req.user._id
     if (!req.file) {
@@ -26,7 +26,7 @@ profileRoutes.put('/profile/updateavatar', uploader.single("avatar"), (req, res,
 profileRoutes.put('/profile/editQuote', (req, res, next) => {
     const quote = req.body.quote
     const id = req.user._id
-    console.log("id:", id)
+    // console.log("id:", id)
     User.findByIdAndUpdate(id, { quote })
         .then(() => res.json({ quote: quote }))
         .catch(err => res.json(err))
@@ -35,8 +35,8 @@ profileRoutes.put('/profile/editQuote', (req, res, next) => {
 
 profileRoutes.post('/profile/recipes', uploader.single("image"), (req, res, next) => {
     //cria uma nova receita para usuário logado
-    console.log('req.body', req.body)
-    console.log('req.file', req.file)
+    // console.log('req.body', req.body)
+    // console.log('req.file', req.file)
     const image = req.file ? req.file.path : ''
 
     const recipe = {
@@ -60,8 +60,8 @@ profileRoutes.post('/profile/recipes', uploader.single("image"), (req, res, next
 
 profileRoutes.get('/profile/recipes', (req, res, next) => {
     //retorna todas as receitas do usuário logado
-    console.log('session in profile-routes', req.session)
-    console.log('usuario logado:', req.session.currentUser._id)
+    // console.log('session in profile-routes', req.session)
+    // console.log('usuario logado:', req.session.currentUser._id)
     const userId = req.session.currentUser._id
     console.log(userId)
     Recipe.find({ owner: userId })
@@ -78,9 +78,7 @@ profileRoutes.get('/profile/recipes', (req, res, next) => {
 
 
 profileRoutes.post('/profile/savedRecipes', (req, res, next) => {
-    //favoritar uma receita, interna ou externa
-    //1. validar se o usuario está logado
-    console.log('savedRecipes called')
+
     const userId = req.session.currentUser._id
     if (req.isAuthenticated()) {
         //1. buscar o id internamente. Se não exite, buscar na API
@@ -95,8 +93,6 @@ profileRoutes.post('/profile/savedRecipes', (req, res, next) => {
                             res.status(200).json(savedRecipe)
                         })
                 } else {
-                    // verificar se existe na api - toDo
-                    //salvar en api-saved-recipe
                     ApiSavedRecipe.create({
                         user: userId,
                         recipe: req.bodyrecipeId
@@ -124,7 +120,7 @@ profileRoutes.post('/profile/savedRecipes', (req, res, next) => {
 
 profileRoutes.get('/profile/savedRecipes', (req, res, next) => {
     const userId = req.session.currentUser._id
-    console.log('get savedRecipes')
+    // console.log('get savedRecipes')
     if (req.isAuthenticated()) {
         //buscar as receitas internas 
         InternalSavedRecipe.find({ user: userId })
@@ -159,13 +155,7 @@ profileRoutes.get('/profile/savedRecipes', (req, res, next) => {
                                 }
                             })
                                 .then((response) => {
-                                    console.log('resposta da Api', response.data)
-                                    //misturamos tudo e enviamos a finalResponse
-                                    // response.data.forEach(apiRecipe => {
-                                    //     console.log('the api recipes data:', apiRecipe)
-
-                                    // })
-                                    console.log('response.data: ', response.data)
+                                    // console.log('response.data: ', response.data)
                                     const formatedApiRecipeList = apiRecipesList.map(ele => {
 
                                         const data = response.data.find(recipe => recipe.id == ele.recipeId)
@@ -183,9 +173,9 @@ profileRoutes.get('/profile/savedRecipes', (req, res, next) => {
                                         }
                                         return ele
                                     })
-                                    console.log('ApiRecipeList', apiRecipesList)
+                                    // console.log('ApiRecipeList', apiRecipesList)
 
-                                    console.log('formatedApiRecipeList', formatedApiRecipeList)
+                                    // console.log('formatedApiRecipeList', formatedApiRecipeList)
                                     res.status(200).json(finalResponse.concat(formatedApiRecipeList))
                                 })
                                 .catch((error) => {
@@ -203,7 +193,7 @@ profileRoutes.get('/profile/savedRecipes', (req, res, next) => {
 })
 
 profileRoutes.delete('/profile/savedInternalRecipes/:_id', (req, res, next) => {
-    console.log('savedRecipes delete called')
+    // console.log('savedRecipes delete called')
     if (req.isAuthenticated()) {
         InternalSavedRecipe.findByIdAndRemove(req.params._id)
             .then(deletedRecipe => {
@@ -216,14 +206,14 @@ profileRoutes.delete('/profile/savedInternalRecipes/:_id', (req, res, next) => {
 })
 
 profileRoutes.delete('/profile/recipe/:_id', (req, res, next) => {
-    console.log('my recipe delete called')
+    // console.log('my recipe delete called')
     if (req.isAuthenticated()) {
         Recipe.findByIdAndRemove(req.params._id)
             .then(deletedRecipe => {
-                InternalSavedRecipe.deleteMany({recipe: req.params._id})
-                .then(() => {
-                    res.status(200).json(deletedRecipe)
-                })
+                InternalSavedRecipe.deleteMany({ recipe: req.params._id })
+                    .then(() => {
+                        res.status(200).json(deletedRecipe)
+                    })
             })
             .catch((error) => {
                 console.log(error)
@@ -231,10 +221,7 @@ profileRoutes.delete('/profile/recipe/:_id', (req, res, next) => {
     }
 })
 
-
-
 profileRoutes.delete('/profile/savedApiRecipes/:_id', (req, res, next) => {
-    console.log('savedApiRecipes delete called')
     if (req.isAuthenticated()) {
         ApiSavedRecipe.findByIdAndRemove(req.params._id)
             .then(deletedRecipe => {

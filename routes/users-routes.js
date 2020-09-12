@@ -38,12 +38,5 @@ usersRoutes.get('/users/:id', (req, res, next) => {
         })
 })
 
-// usersRoutes.get('/users/:id/recipes', (req, res, next) => {
-//     //retorna receita específica de um usuário
-//     Recipe.findById(req.params.id)
-//     .then(recipe => {
-//         conole.log('recipes', recipe)
-//     })
-// })
 
 module.exports = usersRoutes;

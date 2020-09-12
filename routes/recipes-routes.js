@@ -7,6 +7,7 @@ const Recipe = require('../models/recipe-model')
 const ApiSavedRecipe = require('../models/api-saved-recipes')
 
 
+
 recipeRoutes.get('/recipes/all', (req, res, next) => {
     Recipe.find()
         .populate('owner')
@@ -45,8 +46,6 @@ recipeRoutes.get('/recipes/:id', (req, res, next) => {
         Recipe.findById(req.params.id)
             .populate('owner')
             .then(recipe => {
-                console.log('response in', recipe)
-
                 res.status(200).json(recipe)
             })
             .catch((error) => {
@@ -56,18 +55,26 @@ recipeRoutes.get('/recipes/:id', (req, res, next) => {
 
 })
 
-// recipeRoutes.put('/recipe/:id', (req, res, next) => {
-//     console.log('req.body', req.body)
-//     const body = req.body
-//     Recipe.findByIdAndUpdate(req.params.id, { body })
-//         .then(() => {
-//             console.log()
-//             res.status(200).json(recipe)
-//         })
-//         .catch((error) => {
-//             console.log(error)
-//         })
-// })
+recipeRoutes.put('/recipe/:id', uploader.single("image"), (req, res, next) => {
+    console.log('req.body', req.body)
+    const image = req.file ? req.file.path : ''
+    const recipe = {
+        owner: req.body.owner,
+        title: req.body.title,
+        servings: req.body.servings,
+        readyInMinutes: req.body.readyInMinutes,
+        extendedIngredients: req.body.extendedIngredients ? JSON.parse(req.body.extendedIngredients) : null,
+        analyzedInstructions: req.body.analyzedInstructions ? JSON.parse(req.body.analyzedInstructions) : null,
+        imagePath: image
+    }
+    Recipe.findByIdAndUpdate(req.params.id, { recipe })
+        .then(() => {
+            res.status(200).json(recipe)
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+})
 
 
 module.exports = recipeRoutes;
