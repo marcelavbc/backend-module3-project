@@ -20,7 +20,7 @@ const User = require('./models/user-model');
 
 
 mongoose
-  .connect('mongodb://localhost/cook-backend', { useNewUrlParser: true })
+  .connect(process.env.MONGODB_URI, { useNewUrlParser: true })
   .then(x => {
     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
   })
