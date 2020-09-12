@@ -105,23 +105,23 @@ app.use(cors({
 
 
 
-const index = require('./routes/index');
+// const index = require('./routes/index');
 const authRoutes = require('./routes/auth-routes');
 const recipeRoutes = require('./routes/recipes-routes');
 const profileRoutes = require('./routes/profile-routes')
 const usersRoutes = require('./routes/users-routes')
 
 
-app.use('/', index);
+// app.use('/', index);
+
 app.use('/api', authRoutes);
 app.use('/api', recipeRoutes)
 app.use('/api', profileRoutes)
 app.use('/api', usersRoutes)
-
-
-
-
-
+app.use((req, res, next) => {
+  // If no routes match, send them the React HTML.
+  res.sendFile(__dirname + "/public/index.html");
+});
 
 
 module.exports = app;
