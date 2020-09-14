@@ -89,8 +89,8 @@ authRoutes.post('/login', (req, res, next) => {
       }
       req.session.currentUser = theUser
       res.status(200).json(theUser);
-      // console.log(req.session, theUser)
-      // console.log('session in login', req.session)
+      console.log(req.session, theUser)
+      console.log('session in login', req.session)
 
     });
   })(req, res, next);

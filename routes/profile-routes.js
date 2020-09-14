@@ -34,11 +34,7 @@ profileRoutes.put('/profile/editQuote', (req, res, next) => {
 
 
 profileRoutes.post('/profile/recipes', uploader.single("image"), (req, res, next) => {
-    //cria uma nova receita para usuário logado
-    // console.log('req.body', req.body)
-    // console.log('req.file', req.file)
     const image = req.file ? req.file.path : ''
-
     const recipe = {
         owner: req.body.owner,
         title: req.body.title,
@@ -48,7 +44,6 @@ profileRoutes.post('/profile/recipes', uploader.single("image"), (req, res, next
         analyzedInstructions: req.body.analyzedInstructions ? JSON.parse(req.body.analyzedInstructions) : null,
         imagePath: image
     }
-
     Recipe.create(recipe)
         .then(response => {
             res.json(response)
@@ -78,7 +73,6 @@ profileRoutes.get('/profile/recipes', (req, res, next) => {
 
 
 profileRoutes.post('/profile/savedRecipes', (req, res, next) => {
-
     const userId = req.session.currentUser._id
     if (req.isAuthenticated()) {
         //1. buscar o id internamente. Se não exite, buscar na API
@@ -140,7 +134,7 @@ profileRoutes.get('/profile/savedRecipes', (req, res, next) => {
                             console.log('datos', ele)
                             idsList.push(ele.recipeId)
                         })
-                        console.log('idsList ', idsList)
+                        // console.log('idsList ', idsList)
                         if (idsList.length) {
                             axios({
                                 "method": "GET",
