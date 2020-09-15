@@ -12,7 +12,7 @@ const userSchema = new Schema({
   },
   avatar: {
     type: String,
-    default: "https://image.flaticon.com/icons/svg/1912/1912297.svg"
+    default: "https://i0.pngocean.com/files/944/713/232/%D0%9F%D0%B8%D0%B2%D0%BEfactory-beer-restaurant-computer-icons-cook-chef-icon.jpg"
   },
 },
   {

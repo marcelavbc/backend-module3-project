@@ -13,14 +13,17 @@ const MongoStore = require('connect-mongo')(session)
 const mongoose = require('mongoose');
 const passport = require('passport');
 
-require('./configs/passport');
 
 const User = require('./models/user-model');
 // const Recipe = require('./models/recipe-model')
 
 
 mongoose
-  .connect(process.env.MONGODB_URI, { useNewUrlParser: true })
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true
+  })
   .then(x => {
     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
   })
@@ -90,6 +93,7 @@ app.use(session({
 //   )
 // );
 
+require('./configs/passport');
 
 app.use(passport.initialize());
 app.use(passport.session());

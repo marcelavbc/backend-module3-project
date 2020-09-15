@@ -20,26 +20,30 @@ passport.deserializeUser((userIdFromSession, cb) => {
   });
 });
 
-passport.use(new LocalStrategy((username, password, next) => {
-  User.findOne({ username }, (err, foundUser) => {
-    if (err) {
-      next(err);
-      return;
-    }
+passport.use(
+  new LocalStrategy({ passReqToCallback: true }, (req, username, password, callback) => {
 
-    if (!foundUser) {
-      next(null, false, { message: 'Incorrect username.' });
-      return;
-    }
+    console.log('Passport is authenticating...')
 
-    if (!bcrypt.compareSync(password, foundUser.password)) {
-      next(null, false, { message: 'Incorrect password.' });
-      return;
-    }
-
-    next(null, foundUser);
-  });
-}));
+    User.findOne({ username })
+      .then(user => {
+        if (!user) {
+          console.log('could not find user')
+          return callback(null, false, { message: 'incorrect username' })
+        }
+        if (!bcrypt.compareSync(password, user.password)) {
+          console.log('password does not match')
+          return callback(null, false, { message: 'incorrect password' })
+        }
+        console.log('everything Ok')
+        req.session.user = user
+        callback(null, user)
+      })
+      .catch(error => {
+        console.log('Something went wrong')
+        callback(error)
+      })
+  }));
 
 passport.use(
   new GoogleStrategy(
@@ -59,7 +63,7 @@ passport.use(
             return
           }
 
-          User.create({ googleID: profile.id, fullName: profile.displayName, avatar: profile.photos[0].value })
+          User.create({ googleID: profile.id, avatar: profile.photos[0].value })
             .then(newUser => {
               done(null, newUser)
             })

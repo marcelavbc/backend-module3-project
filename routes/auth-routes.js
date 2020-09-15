@@ -3,6 +3,7 @@ const authRoutes = express.Router();
 const passport = require('passport');
 const bcrypt = require('bcryptjs');
 const uploader = require('../configs/cloudinary-setup')
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 const User = require('../models/user-model');
 
@@ -72,6 +73,9 @@ authRoutes.post('/signup', (req, res, next) => {
 //LOGIN
 authRoutes.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, theUser, failureDetails) => {
+
+    console.log('this is the callback function')
+
     if (err) {
       res.status(500).json({ message: 'Something went wrong authenticating user' });
       return;
@@ -89,9 +93,6 @@ authRoutes.post('/login', (req, res, next) => {
       }
       req.session.currentUser = theUser
       res.status(200).json(theUser);
-      console.log(req.session, theUser)
-      console.log('session in login', req.session)
-
     });
   })(req, res, next);
 });

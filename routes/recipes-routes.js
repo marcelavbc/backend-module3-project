@@ -76,5 +76,4 @@ recipeRoutes.put('/recipe/:id', uploader.single("image"), (req, res, next) => {
         })
 })
 
-
 module.exports = recipeRoutes;

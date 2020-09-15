@@ -8,9 +8,6 @@ const axios = require('axios')
 const uploader = require('../configs/cloudinary-setup')
 
 profileRoutes.put('/profile/updateavatar', uploader.single("avatar"), (req, res, next) => {
-    //subir em claudicar e atualizar profile
-    // console.log('session in profile-routes', req.session)
-    // console.log('usuario logado:', req.session.currentUser)
     const avatar = req.file.path;
     const id = req.user._id
     if (!req.file) {
@@ -54,9 +51,6 @@ profileRoutes.post('/profile/recipes', uploader.single("image"), (req, res, next
 })
 
 profileRoutes.get('/profile/recipes', (req, res, next) => {
-    //retorna todas as receitas do usuário logado
-    // console.log('session in profile-routes', req.session)
-    // console.log('usuario logado:', req.session.currentUser._id)
     const userId = req.session.currentUser._id
     console.log(userId)
     Recipe.find({ owner: userId })
@@ -69,13 +63,9 @@ profileRoutes.get('/profile/recipes', (req, res, next) => {
         })
 })
 
-
-
-
 profileRoutes.post('/profile/savedRecipes', (req, res, next) => {
     const userId = req.session.currentUser._id
     if (req.isAuthenticated()) {
-        //1. buscar o id internamente. Se não exite, buscar na API
         Recipe.findById(req.body.recipeId)
             .then(recipe => {
                 if (recipe) {
@@ -89,7 +79,7 @@ profileRoutes.post('/profile/savedRecipes', (req, res, next) => {
                 } else {
                     ApiSavedRecipe.create({
                         user: userId,
-                        recipe: req.bodyrecipeId
+                        recipe: req.bodyrecipeId,
                     })
                         .then(savedRecipe => {
                             res.status(200).json(savedRecipe)
@@ -109,8 +99,6 @@ profileRoutes.post('/profile/savedRecipes', (req, res, next) => {
         res.status(401).json({ message: 'Unauthorized.' });
     }
 })
-
-
 
 profileRoutes.get('/profile/savedRecipes', (req, res, next) => {
     const userId = req.session.currentUser._id
@@ -226,6 +214,7 @@ profileRoutes.delete('/profile/savedApiRecipes/:_id', (req, res, next) => {
             })
     }
 })
+
 
 
 module.exports = profileRoutes
