@@ -126,7 +126,7 @@ const usersRoutes = require('./routes/users-routes')
 app.use('/api', authRoutes);
 app.use('/api', recipeRoutes)
 app.use('/api', profileRoutes)
-// app.use('/api', usersRoutes)
+app.use('/api', usersRoutes)
 // app.use((req, res, next) => {
 //   // If no routes match, send them the React HTML.
 //   res.sendFile(__dirname + "/public/index.html");
