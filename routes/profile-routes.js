@@ -30,8 +30,8 @@ profileRoutes.put('/profile/editQuote', (req, res, next) => {
 });
 
 
-profileRoutes.post('/profile/recipes', uploader.single("image"), (req, res, next) => {
-    const image = req.file ? req.file.path : ''
+profileRoutes.post('/profile/recipes', uploader.single("imagePath"), (req, res, next) => {
+    const image = req.file ? req.file.path : null
     const recipe = {
         owner: req.body.owner,
         title: req.body.title,
@@ -119,7 +119,7 @@ profileRoutes.get('/profile/savedRecipes', (req, res, next) => {
 
                         const idsList = []
                         apiRecipesList.forEach(ele => {
-                            console.log('datos', ele)
+                            // console.log('datos', ele)
                             idsList.push(ele.recipeId)
                         })
                         // console.log('idsList ', idsList)

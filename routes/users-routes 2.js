@@ -26,11 +26,11 @@ usersRoutes.get('/users/:id', (req, res, next) => {
             Recipe.find({ owner: req.params.id })
                 .then(recipesFromUser => {
                     recipesFromUser.forEach(ele => {
-                        console.log('recipe: ', ele)
+                        // console.log('recipe: ', ele)
                         finalResult.push(ele)
                     })
                     res.json(finalResult)
-                    console.log('the final result:', finalResult)
+                    // console.log('the final result:', finalResult)
                 })
         })
         .catch(err => {

@@ -22,7 +22,7 @@ recipeRoutes.get('/recipes/all', (req, res, next) => {
 
 
 recipeRoutes.get('/recipes/:id', (req, res, next) => {
-    console.log(req.params.id)
+    // console.log(req.params.id)
     let recipeId = req.params.id
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         axios({
@@ -55,8 +55,8 @@ recipeRoutes.get('/recipes/:id', (req, res, next) => {
 
 })
 
-recipeRoutes.put('/recipe/:id', uploader.single("imagePath"), (req, res, next) => {
-    console.log('req.body', req.body)
+recipeRoutes.put('/recipe/:id', uploader.single("image"), (req, res, next) => {
+    // console.log('req.body', req.body)
     const image = req.file ? req.file.path : ''
     const recipe = {
         owner: req.body.owner,

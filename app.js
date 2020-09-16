@@ -104,7 +104,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // default value for title local
-app.locals.title = 'Cook - Generated with IronGenerator';
+app.locals.title = 'Cook - Search the perfect recipe!';
 
 app.use(cors({
   credentials: true,

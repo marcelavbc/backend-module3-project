@@ -3,8 +3,6 @@ const usersRoutes = express.Router();
 
 const User = require('../models/user-model');
 const Recipe = require('../models/recipe-model')
-
-
 usersRoutes.get('/users', (req, res, next) => {
     //retorna todos os usuários
     User.find()
@@ -19,7 +17,7 @@ usersRoutes.get('/users', (req, res, next) => {
 
 usersRoutes.get('/users/:id', (req, res, next) => {
     //retorna o profile de um usuario
-    console.log(req.params.id)
+    // console.log(req.params.id)
     User.findById(req.params.id)
         .then(user => {
             const finalResult = [];
