@@ -3,6 +3,8 @@ const usersRoutes = express.Router();
 
 const User = require('../models/user-model');
 const Recipe = require('../models/recipe-model')
+
+
 usersRoutes.get('/users', (req, res, next) => {
     //retorna todos os usuários
     User.find()

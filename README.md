@@ -4,7 +4,7 @@
 Marcela Vilas Boas Charchar
 
 # Link to App: 
-XXXXX
+https://justcookit.herokuapp.com/
 
 ## Description
 
@@ -35,7 +35,7 @@ Search recipes according to available ingredients
 ## SIGN UP
 | Method | URL       | Description              |
 | ------ | ----------| ------------------------ |
-| POST   | api/login | create a new account     |
+| POST   | api/signup| create a new account     |
 
 ## LOGIN
 | Method | URL       | Description             |
@@ -53,37 +53,57 @@ Search recipes according to available ingredients
 | GET    | api/logout  | check if the user is logged in |
 
 ### Profile Routes
-| Method | URL                  |          Description                           |
-| ------ | -------------------- | -----------------------------------------------|
-| PUT    | /profile/updateavatar| changes avatar image                           |
-| PUT    | /profile/edit        | changes user data                              |
-| POST   | /profile/recipes     | create a new recipe in the profile             |
-| GET    | /profile/recipes     | return all recipes from profile                |
-| GET    | /profile/recipes/:id | redirects to recipe details page               |
-| PUT    | /profile/recipes/:id | edit recipe details                            |
-| DELETE | /profile/recipes/:id | delete a recipe                                |
+| Method | URL                               |          Description                           |
+| ------ | --------------------              | -----------------------------------------------|
+| PUT    | /profile/updateavatar             | changes avatar image                           |
+| PUT    | /profile/editQuote                | changes quote                                  |
+| POST   | /profile/recipes                  | create a new recipe in the profile             |
+| GET    | /profile/recipes                  | return all recipes from profile                |
+| POST   | /profile/savedRecipes             | save a recipe as favorite                      |
+| GET    | /profile/savedRecipes             | get all saved recipes                          |
+| DELETE | /profile/savedInternalRecipes/:id | delete a internal recipe from favorites        |
+| DELETE | /profile/savedApiRecipes/:id      | delete a api recipe from favorites             |
+| DELETE | /profile/recipes/:id              | delete a recipe                                |
+
 
 ### Users Routes
 | Method | URL                          |          Description                           |
 | ------ | ---------------------------- | -----------------------------------------------|
 | GET    | /users                       | return all users                               |
-| GET    | /users/:id/recipes           | return all recipes from user                   |
-| GET    | /users/:id/recipes/recipe_id | return one recipe from user                    |
+| GET    | /users/:id                   | return a users  profile                        |
+
 
 ### Recipes Routes
 | Method | URL        |          Description                           |
 | ------ | ---------- | -----------------------------------------------|
-| GET    | /recipes   | return all recipes by query                    |
+| GET    | /recipes/all   | return all recipes                 |
+| GET    | /recipes/:id   | return an especific recipe               |
 
 
 ## Models
 ### User model: 
-  - username: String,
-  - password: String,
-  - email: String,
-  - googleID: String,
-  - quote: String,
-  - avatar: {
-    type: String,
-    default: ""
-  },
+  - username
+  - password
+  - email
+  - googleID
+  - quote
+  - avatar
+
+### Recipe model:
+- title
+- readyInMinutes
+- servings
+- extendedIngredients
+- analyzedInstructions
+- imagePath
+- owner
+
+### API Recipe model:
+
+- user 
+- recipeId
+
+### Internal Recipe model:
+
+- user 
+- recipe
