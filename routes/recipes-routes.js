@@ -55,7 +55,7 @@ recipeRoutes.get('/recipes/:id', (req, res, next) => {
 
 })
 
-recipeRoutes.put('/recipe/:id', uploader.single("image"), (req, res, next) => {
+recipeRoutes.put('/recipe/:id', uploader.single("imagePath"), (req, res, next) => {
     console.log('req.body', req.body)
     const image = req.file ? req.file.path : ''
     const recipe = {

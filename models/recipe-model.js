@@ -16,9 +16,18 @@ const recipeSchema = new Schema({
     },
     extendedIngredients: [
         {
-            name: String,
-            amount: Number,
-            unit: String
+            name: {
+                type: String,
+                default: 'No ingredients'
+            },
+            amount: {
+                type: Number,
+                default: 0
+            },
+            unit: {
+                type: String, 
+                default: '-'
+            }
         }],
 
     imagePath: {
@@ -29,14 +38,18 @@ const recipeSchema = new Schema({
         {
             steps: [
                 {
-                    number: Number,
-                    step: String
+                    number: {
+                        type: Number,
+                        default: 0
+                    },
+                    step: {
+                        type: String, 
+                        default: '-'
+                    }
                 }
             ]
         }
     ],
-    readyInMinutes: Number,
-    servings: Number,
     owner: { type: Schema.Types.ObjectId, ref: 'User' },
 
 }, {
