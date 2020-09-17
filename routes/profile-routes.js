@@ -30,7 +30,7 @@ profileRoutes.put('/profile/editQuote', (req, res, next) => {
 });
 
 
-profileRoutes.post('/profile/recipes', uploader.single("imagePath"), (req, res, next) => {
+profileRoutes.post('/profile/recipes', uploader.single("image"), (req, res, next) => {
     const image = req.file ? req.file.path : null
     const recipe = {
         owner: req.body.owner,

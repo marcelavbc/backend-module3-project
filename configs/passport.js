@@ -22,25 +22,22 @@ passport.deserializeUser((userIdFromSession, cb) => {
 
 passport.use(
   new LocalStrategy({ passReqToCallback: true }, (req, username, password, callback) => {
-
-    console.log('Passport is authenticating...')
-
     User.findOne({ username })
       .then(user => {
         if (!user) {
           console.log('could not find user')
-          return callback(null, false, { message: 'incorrect username' })
+          return callback(null, false, { message: 'Humm... Wrong username. Try again' })
         }
         if (!bcrypt.compareSync(password, user.password)) {
           console.log('password does not match')
-          return callback(null, false, { message: 'incorrect password' })
+          return callback(null, false, { message: 'Wrong password. Try again' })
         }
         console.log('everything Ok')
         req.session.user = user
         callback(null, user)
       })
       .catch(error => {
-        console.log('Something went wrong')
+        console.log('Something went wrong. Try again')
         callback(error)
       })
   }));

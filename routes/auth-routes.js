@@ -16,8 +16,7 @@ authRoutes.post('/signup', (req, res, next) => {
   const quote = req.body.quote
 
   if (!username || !password) {
-    res.status(400).json({ message: 'Provide username and password' });
-    return;
+    res.status(400).json({ message: 'Please, provide username and password' });
   }
 
   // const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
@@ -26,7 +25,7 @@ authRoutes.post('/signup', (req, res, next) => {
   //   return;
   // }
   if (password.length < 7) {
-    res.status(400).json({ message: 'Please make your password at least 8 characters long for security purposes.' });
+    res.status(400).json({ message: 'The password should have at least 8 characters long.' });
     return;
   }
 
@@ -37,7 +36,7 @@ authRoutes.post('/signup', (req, res, next) => {
     }
 
     if (foundUser) {
-      res.status(400).json({ message: 'Username taken. Choose another one.' });
+      res.status(400).json({ message: 'Sorry! Username taken. Choose another one.' });
       return;
     }
 
